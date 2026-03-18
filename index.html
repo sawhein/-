@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="สวนทุเรียน">
+<meta name="theme-color" content="#f2efea">
+<title>🌿 สวนทุเรียน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f2efea; --bg2:#e8e3db; --surface:#fff; --surface2:#f8f6f2;
+  --border:#e3ddd5; --border2:#d5cec5;
+  --t1:#191710; --t2:#6a6258; --t3:#9b9086;
+  --green:#386836; --green-l:#e5f0e5; --green-m:#78aa76;
+  --amber:#ad7b2a; --amber-l:#fdf2dc;
+  --red:#9d2d2d; --red-l:#fbeaea;
+  --blue:#2b5a8c; --blue-l:#e5eff9;
+  --purple:#5a3888; --purple-l:#f0eaf8;
+  --teal:#2a6b68; --teal-l:#e3f2f0;
+  --sh1:0 1px 4px rgba(0,0,0,.07);
+  --sh2:0 4px 16px rgba(0,0,0,.09);
+  --sh3:0 24px 64px rgba(0,0,0,.18),0 8px 24px rgba(0,0,0,.09);
+  --r:16px; --rsm:10px;
+  --st:env(safe-area-inset-top,0px);
+  --sb:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--t1);min-height:100dvh;overflow-x:hidden}
+
+/* ─── HEADER ─── */
+.hdr{
+  position:sticky;top:0;z-index:80;
+  background:rgba(255,255,255,.94);border-bottom:1px solid var(--border);
+  padding:calc(var(--st) + 14px) 18px 14px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.hdr-row{display:flex;align-items:center;gap:10px}
+.hdr-icon{width:38px;height:38px;border-radius:11px;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hdr-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--t1);letter-spacing:-.3px}
+.hdr-sub{font-size:12px;color:var(--t3);margin-top:1px}
+.hdr-btn{margin-left:auto;width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2);transition:all .14s;flex-shrink:0}
+.hdr-btn:active{background:var(--bg2);transform:scale(.90)}
+.hdr-btn.spin{animation:rot .6s linear}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ─── SCROLL WRAP ─── */
+.scr{padding:18px 16px calc(var(--sb) + 28px)}
+
+/* ─── SPRAY HERO ─── */
+.spray-hero{
+  background:linear-gradient(140deg,#1b361b 0%,#2b5628 55%,#3d7a38 100%);
+  border-radius:20px;padding:18px 20px 16px;margin-bottom:20px;
+  position:relative;overflow:hidden;box-shadow:0 6px 28px rgba(20,50,18,.32);
+  cursor:pointer;transition:transform .15s;
+}
+.spray-hero:active{transform:scale(.98)}
+.spray-hero::after{content:'💊';position:absolute;right:-6px;top:-6px;font-size:74px;opacity:.09;pointer-events:none}
+.sh-eyebrow{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:5px}
+.sh-date{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.4px;line-height:1.1}
+.sh-ago{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px}
+.sh-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
+.sh-chip{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:rgba(255,255,255,.13);color:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.18)}
+
+/* ─── SECTION LABEL ─── */
+.sec-lbl{font-size:11px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--t3);margin-bottom:12px;margin-top:4px}
+
+/* ─── LOCATION CARDS ─── */
+.loc-cards{display:flex;flex-direction:column;gap:10px}
+.loc-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:16px 16px 14px;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:var(--sh1);position:relative;overflow:hidden;
+}
+.loc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
+.loc-card.c0::before{background:linear-gradient(180deg,#e07820,#f0a040)}
+.loc-card.c1::before{background:linear-gradient(180deg,#2b5a8c,#5080c0)}
+.loc-card.c2::before{background:linear-gradient(180deg,#386836,#78aa76)}
+.loc-card.c3::before{background:linear-gradient(180deg,#5a3888,#9070c8)}
+.loc-card:active{transform:scale(.97)}
+.lc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;padding-left:8px}
+.lc-name{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.2px;line-height:1.3}
+.lc-chev{font-size:18px;color:var(--border2);flex-shrink:0;margin-top:1px}
+.lc-stats{display:flex;gap:8px;padding-left:8px;flex-wrap:wrap}
+.lc-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:7px 11px;display:flex;flex-direction:column;gap:2px;flex:1;min-width:64px}
+.lc-stat-v{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--t1);line-height:1}
+.lc-stat-l{font-size:10px;color:var(--t3);white-space:nowrap}
+.lc-stat.hi .lc-stat-v{color:var(--green)}
+
+/* ─── BACKDROP ─── */
+.bkd{
+  position:fixed;inset:0;z-index:200;pointer-events:none;
+  background:rgba(0,0,0,0);transition:background .3s ease;
+  backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);
+}
+.bkd.on{background:rgba(0,0,0,.42);pointer-events:all;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+
+/* ─── SHEETS BASE ─── */
+.sheet{
+  position:fixed;bottom:0;left:0;right:0;background:var(--surface);
+  border-radius:24px 24px 0 0;transform:translateY(110%);
+  transition:transform .38s cubic-bezier(.32,.72,0,1);
+  overflow:hidden;display:flex;flex-direction:column;
+  padding-bottom:var(--sb);box-shadow:var(--sh3);
+}
+.sheet.on{transform:translateY(0)}
+/* layering */
+#s1{z-index:201;max-height:80vh}
+#s2{z-index:202;max-height:86vh}
+#s3{z-index:203;max-height:90vh}
+/* peek transforms */
+#s1.p1{transform:translateY(-12px) scale(.965);border-radius:20px 20px 0 0}
+#s1.p2{transform:translateY(-20px) scale(.94);border-radius:18px 18px 0 0}
+#s2.p1{transform:translateY(-12px) scale(.965);border-radius:20px 20px 0 0}
+
+.s-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 0;flex-shrink:0}
+.s-hdr{padding:13px 18px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px}
+.s-hdr-wrap{flex:1;min-width:0}
+.s-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--t1);letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-sub{font-size:12px;color:var(--t3);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-btn{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--t2);flex-shrink:0;transition:background .14s}
+.s-btn:active{background:var(--border2)}
+.s-btn.back{font-size:20px;font-weight:300;padding-right:2px}
+.s-body{overflow-y:auto;padding:14px 16px 20px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+
+/* ─── SHEET 1: Date Cards ─── */
+.date-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dc{
+  background:var(--surface2);border:1px solid var(--border);border-radius:14px;
+  padding:13px 13px 11px;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.dc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.dc.r1::before{background:linear-gradient(90deg,#e07820,#f0a040)}
+.dc.r2::before{background:linear-gradient(90deg,#2b5a8c,#5080c0)}
+.dc.both::before{background:linear-gradient(90deg,#e07820,#2b5a8c)}
+.dc:active{transform:scale(.95)}
+.dc-day{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:var(--t1);letter-spacing:-.5px;line-height:1}
+.dc-mon{font-size:11px;color:var(--t3);margin-top:1px;margin-bottom:9px}
+.dc-row-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.dc-badge{padding:2px 7px;border-radius:9px;font-size:10px;font-weight:600}
+.dc-badge.r1{background:#fff0e0;color:#a05010}
+.dc-badge.r2{background:var(--blue-l);color:var(--blue)}
+.dc-stats-row{display:flex;flex-direction:column;gap:3px}
+.dc-stat{display:flex;justify-content:space-between;align-items:center}
+.dc-stat-l{font-size:10px;color:var(--t3)}
+.dc-stat-v{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--t1)}
+.dc-stat-v.g{color:var(--green)}
+.dc-age-badge{margin-top:6px;display:inline-block;background:var(--green-l);color:var(--green);font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px}
+
+/* ─── SHEET 2: Tree ID Cards ─── */
+.tree-id-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.tc{
+  background:var(--surface2);border:1px solid var(--border);border-radius:13px;
+  padding:12px 12px 10px;cursor:pointer;transition:all .15s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.tc.r1::before{background:var(--green-m)}
+.tc.r2::before{background:var(--blue)}
+.tc:active{transform:scale(.95)}
+.tc-id{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:800;color:var(--t1);margin-bottom:5px}
+.tc-badge{display:inline-flex;font-size:10px;font-weight:600;padding:2px 7px;border-radius:9px;margin-bottom:6px}
+.tc-badge.r1{background:#fff0e0;color:#a05010}
+.tc-badge.r2{background:var(--blue-l);color:var(--blue)}
+.tc-meta{font-size:11px;color:var(--t3);line-height:1.5}
+.tc-meta b{color:var(--green);font-weight:600}
+
+/* ─── SHEET 3: Tree Detail ─── */
+.tree-id-big{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.5px}
+.pills-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px}
+.pills-row::-webkit-scrollbar{display:none}
+.pill{flex-shrink:0;padding:5px 13px;border-radius:20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:var(--surface2);color:var(--t2);cursor:pointer;transition:all .14s;user-select:none}
+.pill.on{background:var(--green);border-color:var(--green);color:#fff}
+.pill:active{transform:scale(.92)}
+.r-sec{margin-bottom:14px}
+.r-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.rdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rdot.r1{background:#e07020}.rdot.r2{background:var(--blue)}
+.rname{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--t1)}
+.rage{font-size:12px;color:var(--t3);margin-left:auto}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px}
+.dbox{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 11px}
+.dbox-l{font-size:10px;color:var(--t3);margin-bottom:3px}
+.dbox-v{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--t1)}
+.dbox-v.g{color:var(--green)}.dbox-v.r{color:var(--red)}.dbox-v.na{font-size:12px;font-family:'Sarabun',sans-serif;font-weight:400;color:var(--t3)}
+.dfull{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rsm);padding:9px 11px;display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.dfull-l{font-size:11px;color:var(--t3)}.dfull-v{font-size:13px;font-weight:600;color:var(--t2)}
+.notebox{margin-top:10px;padding:8px 12px;background:var(--amber-l);border-radius:var(--rsm);border-left:3px solid var(--amber);font-size:12px;color:var(--amber)}
+.notebox strong{display:block;font-size:10px;margin-bottom:2px;color:#7a5618;text-transform:uppercase;letter-spacing:.4px}
+.divhr{height:1px;background:var(--border);margin:11px 0}
+.no-data{padding:16px;background:var(--bg2);border-radius:var(--rsm);text-align:center;font-size:13px;color:var(--t3)}
+
+/* ─── LOADING / ERROR ─── */
+.ld{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:240px;gap:14px}
+.ld-spin{width:30px;height:30px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:rot .8s linear infinite}
+.ld-t{font-size:14px;color:var(--t3)}
+.err{background:var(--red-l);border:1px solid #f0c0c0;border-radius:var(--r);padding:20px;text-align:center}
+.err-t{font-size:14px;color:var(--red);font-weight:500}
+.err-s{font-size:12px;color:var(--t3);margin-top:4px}
+
+/* ─── SPRAY HISTORY MODAL ─── */
+#spraySheet{z-index:201;max-height:85vh}
+.spray-list{display:flex;flex-direction:column;gap:8px}
+.spray-item{background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:11px 13px;display:flex;gap:11px;align-items:flex-start}
+.si-date-col{flex-shrink:0;text-align:center;width:42px}
+.si-day{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--t1);line-height:1}
+.si-mon{font-size:10px;color:var(--t3);font-weight:500}
+.si-div{width:1px;background:var(--border);align-self:stretch;flex-shrink:0}
+.si-info{flex:1;min-width:0}
+.si-types{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+.st-pill{padding:2px 7px;border-radius:10px;font-size:11px;font-weight:600}
+.st-a{background:#fff8e6;color:#8a5a10}
+.st-b{background:var(--blue-l);color:var(--blue)}
+.st-c{background:var(--green-l);color:var(--green)}
+.st-d{background:var(--purple-l);color:var(--purple)}
+.st-ph{background:var(--teal-l);color:var(--teal)}
+.st-x{background:var(--bg2);color:var(--t2)}
+.si-area{font-size:12px;color:var(--t3)}
+.si-person{font-size:11px;color:var(--t3);margin-top:2px}
+.si-note{font-size:11px;color:var(--amber);margin-top:2px;font-style:italic}
+.si-vol{flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--t2);align-self:center}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div class="hdr-icon">🌿</div>
+    <div>
+      <div class="hdr-title">สวนทุเรียน</div>
+      <div class="hdr-sub" id="lastUpdate">กำลังโหลด…</div>
+    </div>
+    <button class="hdr-btn" id="refreshBtn" onclick="loadData(true)">↻</button>
+  </div>
+</div>
+
+<!-- HOME CONTENT -->
+<div class="scr" id="homeContent">
+  <div class="ld"><div class="ld-spin"></div><div class="ld-t">กำลังโหลดข้อมูล…</div></div>
+</div>
+
+<!-- BACKDROP -->
+<div class="bkd" id="bkd" onclick="closeAll()"></div>
+
+<!-- SPRAY HISTORY SHEET -->
+<div class="sheet" id="spraySheet">
+  <div class="s-handle"></div>
+  <div class="s-hdr">
+    <div class="s-hdr-wrap">
+      <div class="s-title">💊 ประวัติการฉีดพ่น</div>
+      <div class="s-sub" id="spraySub"></div>
+    </div>
+    <button class="s-btn" onclick="closeAll()">✕</button>
+  </div>
+  <div class="s-body" id="sprayBody"></div>
+</div>
+
+<!-- SHEET 1: Date Cards for a location -->
+<div class="sheet" id="s1">
+  <div class="s-handle"></div>
+  <div class="s-hdr">
+    <div class="s-hdr-wrap">
+      <div class="s-title" id="s1Title">วันที่ปัดดอก</div>
+      <div class="s-sub" id="s1Sub"></div>
+    </div>
+    <button class="s-btn" onclick="closeAll()">✕</button>
+  </div>
+  <div class="s-body" id="s1Body"></div>
+</div>
+
+<!-- SHEET 2: Tree ID Cards for a date -->
+<div class="sheet" id="s2">
+  <div class="s-handle"></div>
+  <div class="s-hdr">
+    <button class="s-btn back" onclick="back2()">‹</button>
+    <div class="s-hdr-wrap">
+      <div class="s-title" id="s2Title">ต้นทุเรียน</div>
+      <div class="s-sub" id="s2Sub"></div>
+    </div>
+    <button class="s-btn" onclick="closeAll()">✕</button>
+  </div>
+  <div class="s-body" id="s2Body"></div>
+</div>
+
+<!-- SHEET 3: Tree Detail -->
+<div class="sheet" id="s3">
+  <div class="s-handle"></div>
+  <div class="s-hdr">
+    <button class="s-btn back" onclick="back3()">‹</button>
+    <div class="s-hdr-wrap">
+      <div class="tree-id-big" id="s3TreeId">—</div>
+      <div class="s-sub" id="s3Sub"></div>
+    </div>
+    <button class="s-btn" onclick="closeAll()">✕</button>
+  </div>
+  <div class="s-body" id="s3Body"></div>
+</div>
+
+<script>
+// ── CONFIG ───────────────────────────────────────────────────────────────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzUzEipwYmUamOwUMmFZJvIojgH5i90ZSy-YC2VGD6DDKxuhdfrjmCuAxlUuF64fBgl/exec';
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let D = null; // allData
+let cbN = 0;
+let curLocIdx = -1;
+let curDateKey = '';
+let curDateTrees = []; // trees for current date
+let curTreePillIdx = 0;
+
+// ── DEMO DATA ────────────────────────────────────────────────────────────────
+const DEMO = {
+  sprayLog:[
+    {date:'2026-03-14',area:'ทั่วไร่',types:['ชุดD (ฉีดกดใบออน)'],vol:'500ล.',person:'ป้าแอ้ว/5คน',note:null},
+    {date:'2026-03-13',area:'ทั่วไร่',types:['ชุดB (ฉีดใบเพสลาด)'],vol:'1000ล.',person:null,note:null},
+    {date:'2026-03-12',area:'ทั่วไร่',types:['ชุดC (ฉีดบำรุงดอก)'],vol:'500ล.',person:null,note:null},
+    {date:'2026-03-11',area:'หลังบ้านตะยัด+หน้าไร่',types:['ชุดC (ฉีดบำรุงดอก)'],vol:'1000ล.',person:'ป้าแอ้ว(5คน)',note:null},
+    {date:'2026-03-10',area:'ทั่วไร่',types:['ชุดA ฉีดดึงดอกใหม่'],vol:'1500ล.',person:'ป้าแอ้ว(5คน)',note:null},
+    {date:'2026-03-09',area:'ทั่วไร่',types:['PH'],vol:'16ลูก',person:'ป้าแอ้ว(4คน)',note:null},
+    {date:'2026-03-07',area:'ทั่วไร่',types:['ชุดB (ฉีดใบเพสลาด)'],vol:'1000ล.',person:'ป้าแอ้ว(4คน)',note:null},
+    {date:'2026-03-06',area:'ทั่วไร่',types:['ชุดC (ฉีดบำรุงดอก)'],vol:'1400ล.',person:'ป้าออย(6คน)',note:null},
+    {date:'2026-03-05',area:'ทั่วไร่',types:['ชุดA ฉีดดึงดอกใหม่','ชุดD'],vol:'2000ล.',person:'ป้าแอ้ว(4คน)',note:'ฉีดชุดD 500ล. ด้วย'},
+    {date:'2026-03-04',area:'ทั่วไร่',types:['ชุดD (ฉีดกดใบออน)'],vol:'2500ล.',person:'พี่หนู(5คน)',note:null},
+    {date:'2026-03-02',area:'ทั่วไร่',types:['ชุดB (ฉีดใบเพสลาด)'],vol:'1000ล.',person:'ป้าแอ้ว(5คน)',note:null},
+    {date:'2026-02-28',area:'ทัวไร่',types:['ชุดC (ฉีดบำรุงดอก)'],vol:'800ล.',person:'ป้าแอ้ว(6คน)',note:null},
+    {date:'2026-02-27',area:'ทั่วไร่',types:['ชุดA ฉีดดึงดอกใหม่'],vol:'1500ล.',person:'ป้าแอ้ว',note:null},
+    {date:'2026-02-26',area:'ทั่วไร่',types:['ชุดB ใบเพสลาด'],vol:'500ล.',person:'ป้าแอ้ว',note:null},
+    {date:'2026-02-22',area:'ทั่วไร่',types:['ชุดA ฉีดดึงดอกใหม่'],vol:'2500ล.',person:'ป้าแอ้ว',note:'ฉีดวันที่ 21-22'},
+  ],
+  locations:[
+    {
+      name:'หลังบ้านตะยัด+ต้นมะขาม',
+      icon:'🌲',
+      trees:[
+        {id:'A001',r1:{d:'2026-02-26',f:null,dr:0},r2:{d:'2026-03-12',f:null,dr:null},note:null},
+        {id:'A002',r1:{d:'2026-02-13',f:null,dr:0},r2:{d:'2026-02-23',f:null,dr:null},note:null},
+        {id:'A003',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A004',r1:{d:'2026-02-13',f:null,dr:0},r2:{d:'2026-02-23',f:null,dr:null},note:null},
+        {id:'A005',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:'ต้นดอกสมบูรณ์มาก'},
+        {id:'A006',r1:null,r2:null,note:null},
+        {id:'A007',r1:{d:'2026-02-23',f:null,dr:0},r2:null,note:null},
+        {id:'A008',r1:{d:'2026-02-23',f:null,dr:0},r2:null,note:null},
+        {id:'A009',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A010',r1:null,r2:null,note:null},
+        {id:'A011',r1:{d:'2026-02-26',f:null,dr:0},r2:{d:'2026-03-02',f:null,dr:null},note:null},
+        {id:'A012',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A013',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A014',r1:{d:'2026-02-26',f:8,dr:1},r2:null,note:null},
+        {id:'A015',r1:{d:'2026-02-26',f:6,dr:0},r2:null,note:null},
+        {id:'A016',r1:{d:'2026-02-23',f:null,dr:0},r2:{d:'2026-03-12',f:null,dr:null},note:null},
+        {id:'A017',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A018',r1:{d:'2026-02-26',f:null,dr:0},r2:null,note:null},
+        {id:'A019',r1:{d:'2026-02-13',f:null,dr:0},r2:null,note:null},
+        {id:'A020',r1:{d:'2026-02-23',f:null,dr:0},r2:null,note:null},
+      ]
+    },
+    {
+      name:'น่าไร่+ต้นมะค่า',
+      icon:'🌲',
+      trees:[
+        {id:'A001',r1:null,r2:null,note:null},
+        {id:'A002',r1:{d:'2026-02-28',f:7,dr:0},r2:null,note:null},
+        {id:'A003',r1:null,r2:null,note:null},
+        {id:'A004',r1:{d:'2026-02-28',f:5,dr:0},r2:null,note:null},
+        {id:'A005',r1:{d:'2026-02-28',f:9,dr:1},r2:null,note:null},
+        {id:'A006',r1:null,r2:null,note:null},
+        {id:'A007',r1:{d:'2026-02-28',f:4,dr:0},r2:null,note:null},
+        {id:'A008',r1:{d:'2026-02-28',f:11,dr:0},r2:null,note:null},
+        {id:'A009',r1:{d:'2026-02-28',f:6,dr:2},r2:null,note:null},
+        {id:'A010',r1:null,r2:null,note:null},
+        {id:'A011',r1:{d:'2026-02-28',f:8,dr:0},r2:null,note:null},
+        {id:'A012',r1:null,r2:null,note:null},
+        {id:'A013',r1:{d:'2026-02-28',f:3,dr:0},r2:null,note:null},
+        {id:'A014',r1:{d:'2026-02-28',f:10,dr:0},r2:null,note:null},
+        {id:'A015',r1:null,r2:null,note:null},
+        {id:'A016',r1:{d:'2026-02-28',f:7,dr:1},r2:null,note:null},
+        {id:'A017',r1:{d:'2026-02-28',f:5,dr:0},r2:null,note:null},
+        {id:'A018',r1:null,r2:null,note:null},
+      ]
+    },
+    {
+      name:'หลังบ้านลุงโท',
+      icon:'🌲',
+      trees:[
+        {id:'A001',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A002',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A003',r1:null,r2:null,note:null},
+        {id:'A004',r1:null,r2:null,note:null},
+        {id:'A005',r1:null,r2:null,note:null},
+        {id:'A006',r1:null,r2:null,note:null},
+        {id:'A007',r1:null,r2:null,note:null},
+        {id:'A008',r1:null,r2:null,note:null},
+        {id:'A009',r1:null,r2:null,note:null},
+        {id:'A010',r1:null,r2:null,note:null},
+      ]
+    },
+    {
+      name:'ต้นคู่+ต้นสะเดา',
+      icon:'🌲',
+      trees:[
+        {id:'A001',r1:null,r2:null,note:null},
+        {id:'A002',r1:{d:'2026-03-12',f:null,dr:0},r2:null,note:null},
+        {id:'A003',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A004',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A005',r1:{d:'2026-03-12',f:null,dr:0},r2:null,note:null},
+        {id:'A006',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A007',r1:{d:'2026-03-12',f:null,dr:0},r2:null,note:null},
+        {id:'A008',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A009',r1:{d:'2026-03-12',f:null,dr:0},r2:null,note:null},
+        {id:'A010',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+        {id:'A011',r1:{d:'2026-03-12',f:null,dr:0},r2:null,note:null},
+        {id:'A012',r1:{d:'2026-03-02',f:null,dr:0},r2:null,note:null},
+      ]
+    }
+  ]
+};
+
+// ── LOAD ─────────────────────────────────────────────────────────────────────
+function loadData(force=false){
+  const btn=document.getElementById('refreshBtn');
+  btn.classList.add('spin');
+  if(GAS_URL.includes('YOUR_DEPLOYMENT_ID')){
+    setTimeout(()=>{D=DEMO;render();btn.classList.remove('spin');
+      document.getElementById('lastUpdate').textContent='ข้อมูลตัวอย่าง (Demo Mode)';},550);
+    return;
+  }
+  const cb='_c'+(++cbN),sc=document.createElement('script');
+  const t=setTimeout(()=>{cl();showErr();btn.classList.remove('spin');},10000);
+  function cl(){clearTimeout(t);delete window[cb];if(sc.parentNode)sc.parentNode.removeChild(sc);}
+  window[cb]=d=>{cl();D=d;render();btn.classList.remove('spin');
+    document.getElementById('lastUpdate').textContent=`อัพเดต ${new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}`;};
+  sc.src=`${GAS_URL}?callback=${cb}${force?'&r=1':''}`;
+  sc.onerror=()=>{cl();showErr();btn.classList.remove('spin');};
+  document.head.appendChild(sc);
+}
+function showErr(){document.getElementById('homeContent').innerHTML='<div class="err"><div class="err-t">⚠️ โหลดข้อมูลไม่ได้</div><div class="err-s">ลองรีเฟรชใหม่</div></div>';}
+
+// ── RENDER HOME ───────────────────────────────────────────────────────────────
+function render(){
+  if(!D)return;
+  const spray=D.sprayLog||[];
+  const latest=spray.filter(s=>s.date)[0];
+  const locs=D.locations||[];
+  const colors=['c0','c1','c2','c3'];
+
+  let html='';
+
+  // ── Spray Hero Card ──
+  if(latest){
+    const ago=Math.floor((Date.now()-new Date(latest.date))/86400000);
+    const agoTxt=ago===0?'วันนี้':ago===1?'เมื่อวาน':`${ago} วันที่แล้ว`;
+    const chips=latest.types.map(t=>`<div class="sh-chip">${t}</div>`).join('');
+    html+=`<div class="spray-hero" onclick="openSpraySheet()">
+      <div class="sh-eyebrow">ฉีดพ่นล่าสุด</div>
+      <div class="sh-date">${fmtFull(latest.date)}</div>
+      <div class="sh-ago">${agoTxt}${latest.person?' · '+latest.person:''}</div>
+      <div class="sh-chips">${chips}<div class="sh-chip" style="background:rgba(255,255,255,.08);border-style:dashed">ดูทั้งหมด ›</div></div>
+    </div>`;
+  }
+
+  // ── Location Cards ──
+  html+=`<div class="sec-lbl">แปลงทุเรียน</div><div class="loc-cards">`;
+  locs.forEach((loc,li)=>{
+    const total=loc.trees.length;
+    const pollinated=loc.trees.filter(t=>t.r1||t.r2).length;
+    const totalFruits=loc.trees.reduce((s,t)=>{
+      let f=0;
+      if(t.r1?.f) f+=t.r1.f;
+      if(t.r2?.f) f+=t.r2.f;
+      return s+f;
+    },0);
+    html+=`<div class="loc-card ${colors[li%4]}" onclick="openS1(${li})">
+      <div class="lc-top">
+        <div class="lc-name">${loc.icon} ${loc.name}</div>
+        <div class="lc-chev">›</div>
+      </div>
+      <div class="lc-stats">
+        <div class="lc-stat"><div class="lc-stat-v">${total}</div><div class="lc-stat-l">ต้นทั้งหมด</div></div>
+        <div class="lc-stat hi"><div class="lc-stat-v">${pollinated}</div><div class="lc-stat-l">ปัดดอกแล้ว</div></div>
+        ${totalFruits>0?`<div class="lc-stat"><div class="lc-stat-v">${totalFruits}</div><div class="lc-stat-l">ผลรวม</div></div>`:''}
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('homeContent').innerHTML=html;
+}
+
+// ── SPRAY SHEET ───────────────────────────────────────────────────────────────
+function openSpraySheet(){
+  const spray=(D.sprayLog||[]).filter(s=>s.date);
+  document.getElementById('spraySub').textContent=`${spray.length} รายการ`;
+  let html='<div class="spray-list">';
+  spray.forEach(s=>{
+    const dt=new Date(s.date);
+    const mon=dt.toLocaleDateString('th-TH',{month:'short'});
+    const pills=s.types.map(tp=>{
+      let c='st-x';
+      if(/ชุดA/i.test(tp))c='st-a';
+      else if(/ชุดB/i.test(tp))c='st-b';
+      else if(/ชุดC/i.test(tp))c='st-c';
+      else if(/ชุดD/i.test(tp))c='st-d';
+      else if(/PH/i.test(tp))c='st-ph';
+      return `<div class="st-pill ${c}">${tp}</div>`;
+    }).join('');
+    html+=`<div class="spray-item">
+      <div class="si-date-col"><div class="si-day">${dt.getDate()}</div><div class="si-mon">${mon}</div></div>
+      <div class="si-div"></div>
+      <div class="si-info">
+        <div class="si-types">${pills}</div>
+        <div class="si-area">${s.area||'—'}</div>
+        ${s.person?`<div class="si-person">👤 ${s.person}</div>`:''}
+        ${s.note?`<div class="si-note">📝 ${s.note}</div>`:''}
+      </div>
+      ${s.vol?`<div class="si-vol">${s.vol}</div>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('sprayBody').innerHTML=html;
+  openSheet('spraySheet');
+}
+
+// ── S1: Date Cards for location ───────────────────────────────────────────────
+function openS1(locIdx){
+  curLocIdx=locIdx;
+  const loc=D.locations[locIdx];
+
+  // Build dateMap
+  const dm={};
+  loc.trees.forEach((t,ti)=>{
+    ['r1','r2'].forEach((rk,ri)=>{
+      const r=t[rk];
+      if(r?.d){
+        const key=r.d.split('T')[0];
+        if(!dm[key])dm[key]={rNums:new Set(),trees:[]};
+        dm[key].rNums.add(ri+1);
+        if(!dm[key].trees.find(x=>x.ti===ti))
+          dm[key].trees.push({t,ti,rk});
+      }
+    });
+  });
+
+  const sorted=Object.keys(dm).sort();
+  document.getElementById('s1Title').textContent=`${loc.icon} ${loc.name}`;
+  document.getElementById('s1Sub').textContent=`${sorted.length} วันที่ปัดดอก · ${loc.trees.filter(t=>t.r1||t.r2).length} ต้น`;
+
+  let html='<div class="date-cards-grid">';
+  sorted.forEach(dk=>{
+    const {rNums,trees}=dm[dk];
+    const hasR1=rNums.has(1),hasR2=rNums.has(2);
+    const cls=hasR1&&hasR2?'both':hasR2?'r2':'r1';
+    const diff=Math.floor((Date.now()-new Date(dk))/86400000);
+    const ageTxt=diff>=0?`อายุ ${diff} วัน`:`อีก ${-diff} วัน`;
+    const totalFruits=trees.reduce((s,{t,rk})=>s+(t[rk]?.f||0),0);
+    const badges=(hasR1?'<div class="dc-badge r1">🔴 รอบ 1</div>':'')+(hasR2?'<div class="dc-badge r2">🔵 รอบ 2</div>':'');
+    html+=`<div class="dc ${cls}" onclick="openS2('${dk}',${locIdx})">
+      <div class="dc-day">${new Date(dk).getDate()}</div>
+      <div class="dc-mon">${new Date(dk).toLocaleDateString('th-TH',{month:'short',year:'2-digit'})}</div>
+      <div class="dc-row-badges">${badges}</div>
+      <div class="dc-stats-row">
+        <div class="dc-stat"><span class="dc-stat-l">ต้นที่ปัดดอก</span><span class="dc-stat-v g">${trees.length} ต้น</span></div>
+        ${totalFruits>0?`<div class="dc-stat"><span class="dc-stat-l">ผลรวม</span><span class="dc-stat-v g">${totalFruits} 🍈</span></div>`:''}
+      </div>
+      <div class="dc-age-badge">${ageTxt}</div>
+    </div>`;
+  });
+  html+='</div>';
+  if(!sorted.length) html='<div class="no-data">🌱 ยังไม่มีข้อมูลการปัดดอก</div>';
+
+  document.getElementById('s1Body').innerHTML=html;
+  openSheet('s1');
+}
+
+// ── S2: Tree ID Cards for date ────────────────────────────────────────────────
+function openS2(dateKey,locIdx){
+  curDateKey=dateKey;
+  const loc=D.locations[locIdx];
+
+  const matched=[];
+  loc.trees.forEach((t,ti)=>{
+    ['r1','r2'].forEach(rk=>{
+      if(t[rk]?.d?.split('T')[0]===dateKey){
+        if(!matched.find(m=>m.ti===ti))
+          matched.push({t,ti,rk});
+      }
+    });
+  });
+  curDateTrees=matched;
+
+  const diff=Math.floor((Date.now()-new Date(dateKey))/86400000);
+  document.getElementById('s2Title').textContent=fmtFull(dateKey);
+  document.getElementById('s2Sub').textContent=`${matched.length} ต้น · ${diff>=0?`อายุ ${diff} วัน`:`อีก ${-diff} วัน`}`;
+
+  let html='<div class="tree-id-grid">';
+  matched.forEach((m,i)=>{
+    const {t,rk}=m;
+    const isR2=rk==='r2';
+    const r=t[rk];
+    const age=r?.d?Math.floor((Date.now()-new Date(r.d))/86400000):null;
+    html+=`<div class="tc ${isR2?'r2':'r1'}" onclick="openS3(${i})">
+      <div class="tc-id">${t.id}</div>
+      <div class="tc-badge ${isR2?'r2':'r1'}">${isR2?'🔵 รอบ 2':'🔴 รอบ 1'}</div>
+      <div class="tc-meta">
+        ${age!=null?`อายุ <b>${age} วัน</b><br>`:''}
+        ${r?.f!=null?`ผล <b>${r.f} ลูก</b>`:'ยังไม่นับผล'}
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('s2Body').innerHTML=html;
+
+  // s1 peeks behind
+  peekSheet('s1','p1');
+  openSheet('s2');
+}
+
+// ── S3: Tree Detail ───────────────────────────────────────────────────────────
+function openS3(idx){
+  curTreePillIdx=idx;
+  const m=curDateTrees[idx];
+  const {t}=m;
+  const locIdx=curLocIdx;
+  const loc=D.locations[locIdx];
+
+  document.getElementById('s3TreeId').textContent=`ต้น ${t.id}`;
+  document.getElementById('s3Sub').textContent=`${loc.icon} ${loc.name}`;
+
+  const pills=curDateTrees.map((m2,i)=>
+    `<div class="pill ${i===idx?'on':''}" onclick="openS3(${i})">${m2.t.id}</div>`
+  ).join('');
+
+  let det='';
+  if(t.r1) det+=renderRound(t.r1,1);
+  if(t.r2){if(t.r1)det+='<div class="divhr"></div>';det+=renderRound(t.r2,2);}
+  if(!t.r1&&!t.r2) det='<div class="no-data">🌱 ยังไม่มีข้อมูลการออกดอก</div>';
+  if(t.note) det+=`<div class="notebox"><strong>📝 หมายเหตุ</strong>${t.note}</div>`;
+
+  document.getElementById('s3Body').innerHTML=`<div class="pills-row">${pills}</div>`+det;
+
+  // s1 double-peek, s2 single-peek
+  peekSheet('s1','p2');
+  peekSheet('s2','p1');
+  openSheet('s3');
+}
+
+function renderRound(r,num){
+  if(!r)return'';
+  const dtxt=r.d?new Date(r.d).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'}):'—';
+  const age=r.d?Math.floor((Date.now()-new Date(r.d))/86400000):null;
+  const fv=r.f!=null?`<div class="dbox-v g">${r.f}</div>`:`<div class="dbox-v na">ยังไม่นับ</div>`;
+  const dv=r.dr!=null?`<div class="dbox-v ${r.dr>0?'r':''}">${r.dr}</div>`:`<div class="dbox-v na">—</div>`;
+  const rem=r.f!=null&&r.dr!=null?r.f-r.dr:null;
+  const rv=rem!=null?`<div class="dbox-v g">${rem}</div>`:`<div class="dbox-v na">—</div>`;
+  return`<div class="r-sec">
+    <div class="r-head">
+      <div class="rdot ${num===1?'r1':'r2'}"></div>
+      <div class="rname">${num===1?'🔴':'🔵'} รอบที่ ${num}</div>
+      ${age!=null?`<div class="rage">อายุ ${age} วัน</div>`:''}
+    </div>
+    <div class="dfull"><span class="dfull-l">วันปัดดอก</span><span class="dfull-v">${dtxt}</span></div>
+    <div class="dgrid">
+      <div class="dbox"><div class="dbox-l">จำนวนผล</div>${fv}</div>
+      <div class="dbox"><div class="dbox-l">ผลร่วง/เสีย</div>${dv}</div>
+    </div>
+    <div class="dbox"><div class="dbox-l">ผลคงเหลือ</div>${rv}</div>
+  </div>`;
+}
+
+// ── SHEET CONTROL ─────────────────────────────────────────────────────────────
+function openSheet(id){
+  document.getElementById('bkd').classList.add('on');
+  document.getElementById(id).classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function peekSheet(id,cls){
+  const el=document.getElementById(id);
+  el.classList.remove('p1','p2');
+  el.classList.add(cls);
+}
+function unpeekSheet(id){
+  document.getElementById(id).classList.remove('p1','p2');
+}
+function closeSheet(id){
+  document.getElementById(id).classList.remove('on','p1','p2');
+}
+function back2(){
+  // Close s2, unpeek s1
+  closeSheet('s2');
+  unpeekSheet('s1');
+}
+function back3(){
+  // Close s3, s2 normal, s1 single peek
+  closeSheet('s3');
+  unpeekSheet('s2');
+  peekSheet('s1','p1');
+}
+function closeAll(){
+  ['spraySheet','s1','s2','s3'].forEach(id=>closeSheet(id));
+  document.getElementById('bkd').classList.remove('on');
+  document.body.style.overflow='';
+}
+
+// swipe down gestures
+function addSwipe(el,cb){
+  let sy=0;
+  el.addEventListener('touchstart',e=>{sy=e.touches[0].clientY;},{passive:true});
+  el.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-sy>72)cb();},{passive:true});
+}
+addSwipe(document.getElementById('spraySheet'),closeAll);
+addSwipe(document.getElementById('s1'),()=>{if(!document.getElementById('s2').classList.contains('on'))closeAll();});
+addSwipe(document.getElementById('s2'),()=>{if(!document.getElementById('s3').classList.contains('on'))back2();else back3();});
+addSwipe(document.getElementById('s3'),back3);
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function fmtFull(d){return new Date(d).toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'long',year:'2-digit'});}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
